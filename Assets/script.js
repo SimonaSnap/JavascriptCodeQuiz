@@ -28,8 +28,9 @@ function setTimer()
 //pressButton.addEventListener("click", setTimer);
 
 //creating the first question
-function firstQuestion()
+var questionQuiz1 = function firstQuestion()
 {
+    var question1Container = document.createElement("div");
     var question1 = document.createElement("h2");
     var question1choices = document.createElement("ul")
 
@@ -44,8 +45,10 @@ function firstQuestion()
     var choiceSelect4 = document.createElement("button");
 
     question1.textContent = "Commonly used Javascript datatypes do NOT include?"
-    body.appendChild(question1);
-    body.appendChild(question1choices);
+    body.appendChild(question1Container)
+    question1Container.appendChild(question1);
+    question1Container.appendChild(question1choices);
+    question1Container.setAttribute("id", "container")
 
     choice1.append(choiceSelect1)
     choiceSelect1.textContent = "Objects";
@@ -62,17 +65,15 @@ function firstQuestion()
 
     if (choice1.addEventListener("click", secondQuestion))
     {
-        clearInterval(firstQuestion)
-        return
+        questionQuiz1.setAttribute("css", "display: none;")
     }
     else if (choice2.addEventListener("click", secondQuestion))
     {
-        return
     }
 
     else if (choice3.addEventListener("click", secondQuestion))
     {
-        return
+        close(firstQuestion)
     }
 
     else if (choice4.addEventListener("click", secondQuestion))
@@ -81,30 +82,44 @@ function firstQuestion()
     }
 }
 
-pressButton.addEventListener("click", firstQuestion);
+pressButton.addEventListener("click", questionQuiz1);
+
+
 
 function secondQuestion()
 {
 
+    //the containers for the list and the question
     var question2 = document.createElement("h2");
     var question2choices = document.createElement("ul")
 
+    //the list items to select from
     var choice1 = document.createElement("li");
     var choice2 = document.createElement("li");
     var choice3 = document.createElement("li");
     var choice4 = document.createElement("li");
 
+    //making the list items into buttons, to then trigger the next action as well
+    var choiceSelect1 = document.createElement("button");
+    var choiceSelect2 = document.createElement("button");
+    var choiceSelect3 = document.createElement("button");
+    var choiceSelect4 = document.createElement("button");
+
     question2.textContent = "Javascript can be used for?"
     body.appendChild(question2);
     body.appendChild(question2choices);
 
-    choice1.textContent = "Front-End Development";
+    choice1.append(choiceSelect1)
+    choiceSelect1.textContent = "Front-End Development";
     question2choices.appendChild(choice1);
-    choice2.textContent = "Back-End Development";
+    choice2.append(choiceSelect2)
+    choiceSelect2.textContent = "Back-End Development";
     question2choices.appendChild(choice2);
-    choice3.textContent = "Full Stack Coding";
+    choice3.append(choiceSelect3)
+    choiceSelect3.textContent = "Full Stack Coding";
     question2choices.appendChild(choice3);
-    choice4.textContent = "All of the Above";
+    choice4.append(choiceSelect4)
+    choiceSelect4.textContent = "All of the Above";
     question2choices.appendChild(choice4);
 }
 
