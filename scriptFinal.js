@@ -288,8 +288,49 @@ function startQuiz()
         var question5 = document.getElementById("fifthq");
         question5.hidden = true;
 
+        var recap = document.createElement("p");
+        recap.textContent = "Your total score: " + playerScore
+        body.appendChild(recap);
+
+
+        var confirm = document.createElement("input")
+        confirm.textContent = "Type Initials to submit score"
+        body.appendChild(confirm);
+
+        confirm.addEventListener("click", function (event)
+        {
+            event.preventDefault();
+
+            var initials = document.createElement("button");
+            initials.textContent = "Submit"
+            body.appendChild(initials);
+
+            var submission = confirm.value;
+
+            initials.addEventListener("click", function (x)
+            {
+                x.preventDefault();
+
+                if (confirm === "")
+                {
+                    displayMessage("error", "Form cannot be blank")
+                }
+                else
+                {
+                    displayMessage("Fantastic!")
+                    console.log("success");
+                }
+
+                localStorage.setItem("initials", submission);
+                localStorage.setItem("score", playerScore);
+            })
+        })
+
+
+
 
     }
+    return
 
 }
 
