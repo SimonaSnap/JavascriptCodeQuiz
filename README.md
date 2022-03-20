@@ -1,6 +1,6 @@
 # JavascriptCodeQuiz
 
-GitHub Page:
+GitHub Page: https://simonasnap.github.io/JavascriptCodeQuiz/ 
 
 Description:
 A code quiz that gives the player five questions to answer on coding.
@@ -11,6 +11,7 @@ The player is then asked to input their initials to store their highscore
 What I learned:
 
 Deployed Page Screenshot:
+![A picture of the deployed HTML file](./Assets/Javascript-Quiz.png "Code Quiz Screenshot")
 
 Copyright (c) 2022 Simona Snap
 
