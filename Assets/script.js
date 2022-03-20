@@ -11,7 +11,8 @@ body.appendChild(pressButton);
 startMessage.textContent = "Click to start a short quiz on Coding";
 rulesrecap.textContent = "+1 point with every right answer, -1 point for every wrong answer. Can you get all 5 points?";
 pressButton.textContent = "Start Quiz";
-pressButton.setAttribute("id", "start")
+pressButton.setAttribute("id", "start");
+pressButton.addEventListener("click", startQuiz);
 
 var launch = document.querySelector("#start");
 var statement = document.querySelector(".time");
@@ -151,7 +152,6 @@ function startQuiz()
 
 
     }
-    firstQuestion();
 
     function secondQuestion()
     {
@@ -411,37 +411,42 @@ function startQuiz()
         scoreList.setAttribute("id", "finalscreen");
         body.appendChild(scoreList);
 
+
         var playerArray = [];
         var playerSubmits = localStorage.getItem("player");
         if (null != playerSubmits)
         {
-            playerArray.push(playerSubmits.split(","));
+            playerArray = playerSubmits.split(",");
         }
 
         var scoreArray = [];
         var allScores = localStorage.getItem("score");
         if (null != allScores)
         {
-            scoreArray.push(allScores.split(","));
+            scoreArray = allScores.split(",");
         }
 
-        let i = 0;
-
-        function newScore(p, s)
+        function endList()
         {
-            for (let i = 0; i < playerArray.length; i++)
+
+            for (var i = 0; i < playerArray.length; i++)
             {
+                var endText = "";
+                endText = playerArray[i];
+                endText += " --- ";
+                endText += scoreArray[i];
                 var liEl = document.createElement("li");
-                liEl.textContent = playerArray[i] + "---" + scoreArray[i]
-                scoreList.appendChild(liEl);
+                var textNode = document.createTextNode(endText);
+                liEl.appendChild(textNode);
+                document.getElementById("finalscreen").appendChild(liEl);
             }
         }
 
-        newScore(playerArray[i], scoreArray[i]);
+        endList();
 
     }
 
-
+    firstQuestion();
 }
 
 
@@ -451,4 +456,3 @@ function startQuiz()
 
 
 
-pressButton.addEventListener("click", startQuiz);
