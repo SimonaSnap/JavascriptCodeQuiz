@@ -2,6 +2,11 @@ var body = document.body;
 var pressButton = document.createElement("button");
 body.appendChild(pressButton)
 pressButton.textContent = "Start Quiz";
+pressButton.setAttribute("id", "start")
+
+var launch = document.querySelector("#start");
+var statement = document.querySelector(".time");
+statement.setAttribute("id", "timeKeeper");
 
 let timeLeft = 60;
 let playerScore = 1;
@@ -18,6 +23,10 @@ var fifthSetChoices = ["Cascading Style Sheets", "Cranky Soul Sounds", "Cascade 
 
 function startQuiz()
 {
+    var startingPoint = document.getElementById("start");
+    startingPoint.hidden = true;
+    setTimer();
+
 
     function wrongAnswer()
     {
@@ -30,6 +39,10 @@ function startQuiz()
         {
             timeLeft = timeLeft - 10;
             console.log(timeLeft)
+        }
+        else
+        {
+            quizEnd();
         }
         counter++
 
@@ -283,56 +296,79 @@ function startQuiz()
         choice4.addEventListener("click", wrongAnswer)
     }
 
+
+    function setTimer()
+    {
+        var timerInterval = setInterval(function ()
+        {
+            timeLeft--;
+            statement.textContent = timeLeft + " seconds remaining";
+
+            if (timeLeft === 0)
+            {
+                clearInterval(timerInterval);
+                quizEnd();
+            }
+        }, 1000);
+    }
+
+
     function quizEnd()
     {
         var question5 = document.getElementById("fifthq");
         question5.hidden = true;
 
+        var clock = document.getElementById("timeKeeper");
+        clock.hidden = true;
+
+        var endScreen = document.createElement("div")
+        endScreen.setAttribute("id", "recap")
         var recap = document.createElement("p");
         recap.textContent = "Your total score: " + playerScore
-        body.appendChild(recap);
+        var initials = document.createElement("input");
+        var submit = document.createElement("button")
+        initials.type = "text";
+        initials.value = "";
+        initials.setAttribute("placeholder", "Type your initials to submit highscore")
+        submit.textContent = "Submit";
+        body.appendChild(endScreen);
+        endScreen.appendChild(recap);
+        endScreen.appendChild(initials);
+        endScreen.appendChild(submit);
 
 
-        var confirm = document.createElement("input")
-        confirm.textContent = "Type Initials to submit score"
-        body.appendChild(confirm);
-
-        confirm.addEventListener("click", function (event)
+        submit.addEventListener("click", function (event)
         {
             event.preventDefault();
+            var complete = document.createElement("h3");
+            var submission = initials.value;
 
-            var initials = document.createElement("button");
-            initials.textContent = "Submit"
-            body.appendChild(initials);
-
-            var submission = confirm.value;
-
-            initials.addEventListener("click", function (x)
+            if (submission === "")
             {
-                x.preventDefault();
-
-                if (confirm === "")
-                {
-                    displayMessage("error", "Form cannot be blank")
-                }
-                else
-                {
-                    displayMessage("Fantastic!")
-                    console.log("success");
-                }
-
-                localStorage.setItem("initials", submission);
-                localStorage.setItem("score", playerScore);
-            })
+                initials.setAttribute("Please type in your initials here")
+            }
+            else
+            {
+                body.appendChild(complete);
+            }
         })
 
-
-
-
     }
-    return
+
+
+
+
+    function highscores()
+    {
+        var endScreen = document.getElementById("recap");
+        endScreen.hidden = true;
+    }
+
 
 }
+
+
+
 
 
 
