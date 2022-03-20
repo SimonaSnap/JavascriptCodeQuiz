@@ -9,7 +9,7 @@ var statement = document.querySelector(".time");
 statement.setAttribute("id", "timeKeeper");
 
 let timeLeft = 60;
-let playerScore = 1;
+let playerScore = 0;
 let counter = 1;
 
 var possibleQuestions = ["Commonly used Javascript datatypes do NOT include?", "Javascript can be used for?", "What is the right way to make comments in Javascript?", "What does HTML stand for?", "What does CSS stand for?"]
@@ -324,33 +324,58 @@ function startQuiz()
         var endScreen = document.createElement("div")
         endScreen.setAttribute("id", "recap")
         var recap = document.createElement("p");
-        recap.textContent = "Your total score: " + playerScore
-        var initials = document.createElement("input");
-        var submit = document.createElement("button")
-        initials.type = "text";
-        initials.value = "";
-        initials.setAttribute("placeholder", "Type your initials to submit highscore")
-        submit.textContent = "Submit";
+        recap.textContent = "Your total score: " + playerScore;
         body.appendChild(endScreen);
         endScreen.appendChild(recap);
-        endScreen.appendChild(initials);
-        endScreen.appendChild(submit);
 
+        var take = document.createElement("input");
+        take.type = "text";
+        take.value = "";
+        take.setAttribute("placeholder", " Type in your initials to store highscore");
+        var action = document.createElement("button");
+        action.textContent = "Submit";
 
-        submit.addEventListener("click", function (event)
+        endScreen.appendChild(take);
+        endScreen.appendChild(action);
+
+        var message = document.createElement("h3");
+        body.appendChild(message);
+
+        action.addEventListener("click", function (event)
         {
             event.preventDefault();
-            var complete = document.createElement("h3");
-            var submission = initials.value;
 
-            if (submission === "")
+            var player = take.value;
+            var submitted = [];
+            var inStorage = localStorage.getItem("player");
+            if (null != inStorage)
             {
-                initials.setAttribute("Please type in your initials here")
+                submitted.push(inStorage.split(","));
+            }
+
+            var allScores = [];
+            var scoreStorage = localStorage.getItem("score");
+            if (null != scoreStorage)
+            {
+                allScores.push(scoreStorage.split(","));
+            }
+
+
+            if (player == "")
+            {
+                message.textContent = "Please input your initials";
             }
             else
             {
-                body.appendChild(complete);
+                message.textContent = "Fantastic Job!";
+                submitted.push(player);
+                localStorage.setItem("player", player.toString());
+
+                allScores.push(playerScore);
+                localStorage.setItem("score", playerScore.toString());
+                message.textContent = localStorage.getItem("player");
             }
+
         })
 
     }
@@ -362,6 +387,17 @@ function startQuiz()
     {
         var endScreen = document.getElementById("recap");
         endScreen.hidden = true;
+
+        var player = localStorage.getItem("player");
+        var score = localStorage.getItem("score");
+
+        var scoreList = document.createElement("ol");
+        var aScore = document.createElement("li");
+
+        body.appendChild(scoreList);
+        scoreList.appendChild(aScore);
+        aScore.textContent = player + " --- " + score;
+
     }
 
 
