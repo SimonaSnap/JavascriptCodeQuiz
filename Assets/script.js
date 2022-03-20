@@ -1,340 +1,454 @@
-//creating the button to start the quiz
 var body = document.body;
 var pressButton = document.createElement("button");
-body.appendChild(pressButton)
+var startMessage = document.createElement("h1");
+var rulesrecap = document.createElement("h5");
+var landingMessage = document.createElement("div");
+body.appendChild(landingMessage);
+landingMessage.appendChild(startMessage);
+landingMessage.appendChild(rulesrecap);
+landingMessage.setAttribute("id", "homepage")
+body.appendChild(pressButton);
+startMessage.textContent = "Click to start a short quiz on Coding";
+rulesrecap.textContent = "+1 point with every right answer, -1 point for every wrong answer. Can you get all 5 points?";
 pressButton.textContent = "Start Quiz";
+pressButton.setAttribute("id", "start")
 
-//creating a timer and linking it to the start button
 var launch = document.querySelector("#start");
 var statement = document.querySelector(".time");
+statement.setAttribute("id", "timeKeeper");
 
 let timeLeft = 60;
-let scoreKeeper = 3;
+let playerScore = 0;
+let counter = 1;
+var timerInterval = null;
 
-function setTimer()
+var possibleQuestions = ["Commonly used Javascript datatypes do NOT include?", "Javascript can be used for?", "What is the right way to make comments in Javascript?", "What does HTML stand for?", "What does CSS stand for?"]
+
+var firstSetChoices = ["Objects", "Strings", "DOCTYPE", "Arrays"];
+var secondSetChoices = ["Front-End Development", "Back-End Development", "Full Stack Coding", "All of the Above"];
+var thirdSetChoices = ["/* */", "//", "<-- -->", "This is a comment: "];
+var fourthSetChoices = ["Harry Terry Merry Larry", "Hyper Text Markup Language", "Holy Text Motherland Language", "Hyperfocused Texting Meme Language"];
+var fifthSetChoices = ["Cascading Style Sheets", "Cranky Soul Sounds", "Cascade Sold Sheets", "None of the Above"];
+
+
+function startQuiz()
 {
-    var timerInterval = setInterval(function ()
+    var startingPoint = document.getElementById("start");
+    startingPoint.hidden = true;
+    var homedisplay = document.getElementById("homepage");
+    homedisplay.hidden = true;
+    setTimer();
+
+
+    function wrongAnswer()
     {
-        timeLeft--;
-        statement.textContent = timeLeft + " seconds remaining";
-
-        if (timeLeft === 0)
+        if (playerScore > 0)
         {
-            clearInterval(timerInterval);
-            goToHighscore();
+            playerScore--
+            console.log(playerScore)
         }
-    }, 1000);
-}
+        if (timeLeft > 10)
+        {
+            timeLeft = timeLeft - 10;
+            console.log(timeLeft)
+        }
+        else
+        {
+            quizEnd();
+        }
+        counter++
 
-//pressButton.addEventListener("click", setTimer);
+        if (counter === 1)
+        {
+            firstQuestion()
+        }
+        else if (counter === 2)
+        {
+            secondQuestion()
+        }
+        else if (counter === 3)
+        {
+            thirdQuestion()
+        }
+        else if (counter === 4)
+        {
+            fourthQuestion()
+        }
+        else if (counter === 5)
+        {
+            fifthQuestion()
+        }
+        else
+        {
+            quizEnd()
+        }
+    }
 
-//creating the first question
-function codeQuiz(event)
-{
-    event.stopImmediatePropagation();
 
+    function rightAnswer()
+    {
+        playerScore++;
+        console.log(playerScore);
+        counter++
+
+        if (counter === 1)
+        {
+            firstQuestion()
+        }
+        else if (counter === 2)
+        {
+            secondQuestion()
+        }
+        else if (counter === 3)
+        {
+            thirdQuestion()
+        }
+        else if (counter === 4)
+        {
+            fourthQuestion()
+        }
+        else if (counter === 5)
+        {
+            fifthQuestion()
+        }
+        else
+        {
+            quizEnd()
+        }
+    }
 
     function firstQuestion()
     {
-
-
-        var question1Container = document.createElement("div");
-        var question1 = document.createElement("h2");
-        var question1choices = document.createElement("ul")
-
+        var listEl = document.createElement("ul");
         var choice1 = document.createElement("li");
         var choice2 = document.createElement("li");
         var choice3 = document.createElement("li");
         var choice4 = document.createElement("li");
 
-        var choiceSelect1 = document.createElement("button");
-        var choiceSelect2 = document.createElement("button");
-        var choiceSelect3 = document.createElement("button");
-        var choiceSelect4 = document.createElement("button");
+        var question1 = document.createElement("div");
+        question1.setAttribute("id", "firstq");
+        body.append(question1);
+        var ask1 = document.createElement("h2");
+        question1.append(ask1);
+        ask1.textContent = possibleQuestions[0];
+        question1.append(listEl);
 
-        question1.textContent = "Commonly used Javascript datatypes do NOT include?"
-        body.appendChild(question1Container)
-        question1Container.appendChild(question1);
-        question1Container.appendChild(question1choices);
-        question1Container.setAttribute("id", "container")
-        choiceSelect1.setAttribute("class", "wrong");
-        choiceSelect2.setAttribute("class", "wrong");
-        choiceSelect4.setAttribute("class", "wrong");
+        listEl.append(choice1);
+        choice1.textContent = firstSetChoices[0];
+        choice1.addEventListener("click", wrongAnswer)
 
-        choice1.append(choiceSelect1)
-        choiceSelect1.textContent = "Objects";
-        question1choices.appendChild(choice1);
-        choice2.append(choiceSelect2)
-        choiceSelect2.textContent = "Strings";
-        question1choices.appendChild(choice2);
-        choice3.append(choiceSelect3)
-        choiceSelect3.textContent = "DOCTYPE";
-        question1choices.appendChild(choice3);
-        choice4.append(choiceSelect4)
-        choiceSelect4.textContent = "Arrays";
-        question1choices.appendChild(choice4);
+        listEl.append(choice2);
+        choice2.textContent = firstSetChoices[1];
+        choice2.addEventListener("click", wrongAnswer)
 
-        function wrongAnswer()
-        {
-            var incorrect = document.getElementsByClassName("wrong")
-            incorrect.onclick = questionQuiz2;
-            if (scoreKeeper > 0)
-            {
-                scoreKeeper--;
-            }
-            console.log(scoreKeeper);
-        }
+        listEl.append(choice3);
+        choice3.textContent = firstSetChoices[2];
+        choice3.addEventListener("click", rightAnswer)
 
-        return wrongAnswer();
-
-    }
-
-    var questionQuiz2 = function secondQuestion()
-    {
-        var question2Container = document.createElement("div");
-        var question2 = document.createElement("h2");
-        var question2choices = document.createElement("ul")
-
-        var choice1 = document.createElement("li");
-        var choice2 = document.createElement("li");
-        var choice3 = document.createElement("li");
-        var choice4 = document.createElement("li");
-
-        var choiceSelect1 = document.createElement("button");
-        var choiceSelect2 = document.createElement("button");
-        var choiceSelect3 = document.createElement("button");
-        var choiceSelect4 = document.createElement("button");
-
-        question2.textContent = "Javascript can be used for?"
-        body.appendChild(question2Container)
-        question2Container.appendChild(question2);
-        question2Container.appendChild(question2choices);
-        question2Container.setAttribute("id", "secondContainer")
-
-        choice1.append(choiceSelect1)
-        choiceSelect1.textContent = "Front-End Development";
-        question2choices.appendChild(choice1);
-        choice2.append(choiceSelect2)
-        choiceSelect2.textContent = "Back-End Development";
-        question2choices.appendChild(choice2);
-        choice3.append(choiceSelect3)
-        choiceSelect3.textContent = "Full Stack Coding";
-        question2choices.appendChild(choice3);
-        choice4.append(choiceSelect4)
-        choiceSelect4.textContent = "All of the Above";
-        question2choices.appendChild(choice4);
+        listEl.append(choice4);
+        choice4.textContent = firstSetChoices[3];
+        choice4.addEventListener("click", wrongAnswer)
 
 
-        if (choice1.addEventListener("click", questionQuiz3))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-        else if (choice2.addEventListener("click", questionQuiz3))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-
-        else if (choice3.addEventListener("click", questionQuiz3))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-
-        else if (choice4.addEventListener("click", questionQuiz3))
-        {
-            return
-        }
-    }
-
-    var questionQuiz3 = function thirdQuestion()
-    {
-        var question3Container = document.createElement("div");
-        var question3 = document.createElement("h2");
-        var question3choices = document.createElement("ul")
-
-        var choice1 = document.createElement("li");
-        var choice2 = document.createElement("li");
-        var choice3 = document.createElement("li");
-        var choice4 = document.createElement("li");
-
-        var choiceSelect1 = document.createElement("button");
-        var choiceSelect2 = document.createElement("button");
-        var choiceSelect3 = document.createElement("button");
-        var choiceSelect4 = document.createElement("button");
-
-        question3.textContent = "What is the right way to make comments in Javascript?"
-        body.appendChild(question3Container)
-        question3Container.appendChild(question3);
-        question3Container.appendChild(question3choices);
-        question3Container.setAttribute("id", "thirdContainer")
-
-        choice1.append(choiceSelect1)
-        choiceSelect1.textContent = "/* */";
-        question3choices.appendChild(choice1);
-        choice2.append(choiceSelect2)
-        choiceSelect2.textContent = "//";
-        question3choices.appendChild(choice2);
-        choice3.append(choiceSelect3)
-        choiceSelect3.textContent = "<-- -->";
-        question3choices.appendChild(choice3);
-        choice4.append(choiceSelect4)
-        choiceSelect4.textContent = "This is a comment: ";
-        question3choices.appendChild(choice4);
-
-
-        if (choice1.addEventListener("click", questionQuiz4))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-        else if (choice2.addEventListener("click", questionQuiz4))
-        {
-            return
-        }
-
-        else if (choice3.addEventListener("click", questionQuiz4))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-
-        else if (choice4.addEventListener("click", questionQuiz4))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-    }
-
-    var questionQuiz4 = function fourthQuestion()
-    {
-        var question4Container = document.createElement("div");
-        var question4 = document.createElement("h2");
-        var question4choices = document.createElement("ul")
-
-        var choice1 = document.createElement("li");
-        var choice2 = document.createElement("li");
-        var choice3 = document.createElement("li");
-        var choice4 = document.createElement("li");
-
-        var choiceSelect1 = document.createElement("button");
-        var choiceSelect2 = document.createElement("button");
-        var choiceSelect3 = document.createElement("button");
-        var choiceSelect4 = document.createElement("button");
-
-        question4.textContent = "What does HTML stand for?"
-        body.appendChild(question4Container)
-        question4Container.appendChild(question4);
-        question4Container.appendChild(question4choices);
-        question4Container.setAttribute("id", "fourthContainer")
-
-        choice1.append(choiceSelect1)
-        choiceSelect1.textContent = "Harry Terry Merry Larry";
-        question4choices.appendChild(choice1);
-        choice2.append(choiceSelect2)
-        choiceSelect2.textContent = "Hyper Text Markup Language";
-        question4choices.appendChild(choice2);
-        choice3.append(choiceSelect3)
-        choiceSelect3.textContent = "Holy Text Motherland Language";
-        question4choices.appendChild(choice3);
-        choice4.append(choiceSelect4)
-        choiceSelect4.textContent = "Hyperfocused Texting Meme Language";
-        question4choices.appendChild(choice4);
-
-
-        if (choice1.addEventListener("click", questionQuiz5))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-        else if (choice2.addEventListener("click", questionQuiz5))
-        {
-            return
-        }
-
-        else if (choice3.addEventListener("click", questionQuiz5))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-
-        else if (choice4.addEventListener("click", questionQuiz5))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-    }
-
-
-    var questionQuiz5 = function fifthQuestion()
-    {
-        var question5Container = document.createElement("div");
-        var question5 = document.createElement("h2");
-        var question5choices = document.createElement("ul")
-
-        var choice1 = document.createElement("li");
-        var choice2 = document.createElement("li");
-        var choice3 = document.createElement("li");
-        var choice4 = document.createElement("li");
-
-        var choiceSelect1 = document.createElement("button");
-        var choiceSelect2 = document.createElement("button");
-        var choiceSelect3 = document.createElement("button");
-        var choiceSelect4 = document.createElement("button");
-
-        question5.textContent = "What does CSS stand for?"
-        body.appendChild(question5Container)
-        question5Container.appendChild(question5);
-        question5Container.appendChild(question5choices);
-        question5Container.setAttribute("id", "fifthContainer")
-
-        choice1.append(choiceSelect1)
-        choiceSelect1.textContent = "Cascading Style Sheets";
-        question5choices.appendChild(choice1);
-        choice2.append(choiceSelect2)
-        choiceSelect2.textContent = "Cranky Soul Sounds";
-        question5choices.appendChild(choice2);
-        choice3.append(choiceSelect3)
-        choiceSelect3.textContent = "Cascade Sold Sheets";
-        question5choices.appendChild(choice3);
-        choice4.append(choiceSelect4)
-        choiceSelect4.textContent = "None of the Above";
-        question5choices.appendChild(choice4);
-
-
-        if (choice1.addEventListener("click", scoreTally))
-        {
-            return
-        }
-        else if (choice2.addEventListener("click", scoreTally))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-
-        else if (choice3.addEventListener("click", scoreTally))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-
-        else if (choice4.addEventListener("click", scoreTally))
-        {
-            timeLeft = timeLeft - 10;
-            return
-        }
-    }
-
-    var scoreTally = function goToHighscore()
-    {
-        var box = document.createElement("div")
-        body.appendChild(box)
     }
     firstQuestion();
+
+    function secondQuestion()
+    {
+
+        var listEl = document.createElement("ul");
+        var choice1 = document.createElement("li");
+        var choice2 = document.createElement("li");
+        var choice3 = document.createElement("li");
+        var choice4 = document.createElement("li");
+
+        var question1 = document.getElementById("firstq");
+        question1.hidden = true;
+        //question1.innerHTML = "<div></div>"
+
+        var question2 = document.createElement("div")
+        question2.setAttribute("id", "secondq");
+        body.append(question2);
+        var ask2 = document.createElement("h2");
+        question2.append(ask2);
+        ask2.textContent = possibleQuestions[1];
+        question2.append(listEl);
+        listEl.append(choice1);
+        choice1.textContent = secondSetChoices[0];
+        choice1.addEventListener("click", wrongAnswer)
+
+        listEl.append(choice2);
+        choice2.textContent = secondSetChoices[1]
+        choice2.addEventListener("click", wrongAnswer)
+
+        listEl.append(choice3);
+        choice3.textContent = secondSetChoices[2];
+        choice3.addEventListener("click", wrongAnswer)
+
+        listEl.append(choice4);
+        choice4.setAttribute("class", "correct")
+        choice4.textContent = secondSetChoices[3];
+        choice4.addEventListener("click", rightAnswer)
+
+    }
+
+
+    function thirdQuestion()
+    {
+
+        var listEl = document.createElement("ul");
+        var choice1 = document.createElement("li");
+        var choice2 = document.createElement("li");
+        var choice3 = document.createElement("li");
+        var choice4 = document.createElement("li");
+
+        var question2 = document.getElementById("secondq");
+        question2.hidden = true;
+
+        var question3 = document.createElement("div");
+        question3.setAttribute("id", "thirdq")
+        body.append(question3);
+        var ask3 = document.createElement("h2");
+        question3.append(ask3);
+        ask3.textContent = possibleQuestions[2];
+        question3.append(listEl);
+
+        listEl.append(choice1);
+        choice1.textContent = thirdSetChoices[0];
+        choice1.addEventListener("click", wrongAnswer)
+
+        listEl.append(choice2);
+        choice2.textContent = thirdSetChoices[1]
+        choice2.addEventListener("click", rightAnswer)
+
+        listEl.append(choice3);
+        choice3.setAttribute("class", "correct")
+        choice3.textContent = thirdSetChoices[2];
+        choice3.addEventListener("click", wrongAnswer)
+
+        listEl.append(choice4);
+        choice4.textContent = thirdSetChoices[3];
+        choice4.addEventListener("click", wrongAnswer)
+
+    }
+
+    function fourthQuestion()
+    {
+
+        var listEl = document.createElement("ul");
+        var choice1 = document.createElement("li");
+        var choice2 = document.createElement("li");
+        var choice3 = document.createElement("li");
+        var choice4 = document.createElement("li");
+
+        var question3 = document.getElementById("thirdq");
+        question3.hidden = true;
+
+        var question4 = document.createElement("div");
+        question4.setAttribute("id", "fourthq")
+        body.append(question4);
+        var ask4 = document.createElement("h2");
+        question4.append(ask4);
+        ask4.textContent = possibleQuestions[3];
+        question4.append(listEl);
+
+        listEl.append(choice1);
+        choice1.textContent = fourthSetChoices[0];
+        choice1.addEventListener("click", wrongAnswer)
+
+        listEl.append(choice2);
+        choice2.textContent = fourthSetChoices[1]
+        choice2.addEventListener("click", rightAnswer)
+
+        listEl.append(choice3);
+        choice3.textContent = fourthSetChoices[2];
+        choice3.addEventListener("click", wrongAnswer)
+
+        listEl.append(choice4);
+        choice4.textContent = fourthSetChoices[3];
+        choice4.addEventListener("click", wrongAnswer)
+
+    }
+
+
+    function fifthQuestion()
+    {
+
+        var listEl = document.createElement("ul");
+        var choice1 = document.createElement("li");
+        var choice2 = document.createElement("li");
+        var choice3 = document.createElement("li");
+        var choice4 = document.createElement("li");
+
+        var question4 = document.getElementById("fourthq");
+        question4.hidden = true;
+
+        var question5 = document.createElement("div");
+        question5.setAttribute("id", "fifthq");
+        body.append(question5);
+        var ask5 = document.createElement("h2");
+        question5.append(ask5);
+        ask5.textContent = possibleQuestions[4];
+        question5.append(listEl);
+
+        listEl.append(choice1);
+        choice1.textContent = fifthSetChoices[0];
+        choice1.addEventListener("click", rightAnswer)
+
+        listEl.append(choice2);
+        choice2.textContent = fifthSetChoices[1]
+        choice2.addEventListener("click", wrongAnswer)
+
+        listEl.append(choice3);
+        choice3.textContent = fifthSetChoices[2];
+        choice3.addEventListener("click", wrongAnswer)
+
+        listEl.append(choice4);
+        choice4.textContent = fifthSetChoices[3];
+        choice4.addEventListener("click", wrongAnswer)
+    }
+
+
+    function setTimer()
+    {
+        timerInterval = setInterval(function ()
+        {
+            timeLeft--;
+            statement.textContent = timeLeft + " seconds remaining";
+
+            if ((timeLeft == 0) && (timerInterval != null))
+            {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                quizEnd();
+            }
+        }, 1000);
+    }
+
+
+
+    function quizEnd()
+    {
+        if (timerInterval != null)
+        {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        var question5 = document.getElementById("fifthq");
+        question5.hidden = true;
+
+        var clock = document.getElementById("timeKeeper");
+        clock.hidden = true;
+
+        var endScreen = document.createElement("div")
+        endScreen.setAttribute("id", "recap")
+        var recap = document.createElement("p");
+        recap.textContent = "Your total score: " + playerScore;
+        body.appendChild(endScreen);
+        endScreen.appendChild(recap);
+
+        var take = document.createElement("input");
+        take.type = "text";
+        take.value = "";
+        take.setAttribute("placeholder", " Type in your initials to store highscore");
+        var action = document.createElement("button");
+        action.textContent = "Submit";
+
+        endScreen.appendChild(take);
+        endScreen.appendChild(action);
+
+        var message = document.createElement("h3");
+        body.appendChild(message);
+
+        action.addEventListener("click", function (event)
+        {
+            event.preventDefault();
+
+            var player = take.value;
+            var initials = [];
+            var inStorage = localStorage.getItem("player");
+            if (null != inStorage)
+            {
+                initials.push(inStorage.split(","));
+            }
+
+            var allScores = [];
+            var scoreStorage = localStorage.getItem("score");
+            if (null != scoreStorage)
+            {
+                allScores.push(scoreStorage.split(","));
+            }
+
+
+            if (player == "")
+            {
+                message.textContent = "Please input your initials";
+            }
+            else
+            {
+                message.textContent = "Fantastic Job!";
+                initials.push(player);
+                localStorage.setItem("player", initials.toString());
+
+                allScores.push(playerScore);
+                localStorage.setItem("score", allScores.toString());
+                highscores();
+            }
+
+        })
+
+    }
+
+
+
+
+    function highscores()
+    {
+        var endScreen = document.getElementById("recap");
+        endScreen.hidden = true;
+
+        var scoreList = document.createElement("ul");
+        scoreList.setAttribute("id", "finalscreen");
+        body.appendChild(scoreList);
+
+        var playerArray = [];
+        var playerSubmits = localStorage.getItem("player");
+        if (null != playerSubmits)
+        {
+            playerArray.push(playerSubmits.split(","));
+        }
+
+        var scoreArray = [];
+        var allScores = localStorage.getItem("score");
+        if (null != allScores)
+        {
+            scoreArray.push(allScores.split(","));
+        }
+
+        let i = 0;
+
+        function newScore(p, s)
+        {
+            for (let i = 0; i < playerArray.length; i++)
+            {
+                var liEl = document.createElement("li");
+                liEl.textContent = playerArray[i] + "---" + scoreArray[i]
+                scoreList.appendChild(liEl);
+            }
+        }
+
+        newScore(playerArray[i], scoreArray[i]);
+
+    }
+
+
 }
 
-pressButton.addEventListener("click", codeQuiz);
 
-//setting attributes
 
+
+
+
+
+
+pressButton.addEventListener("click", startQuiz);
