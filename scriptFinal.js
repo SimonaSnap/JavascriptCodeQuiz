@@ -1,6 +1,15 @@
 var body = document.body;
 var pressButton = document.createElement("button");
-body.appendChild(pressButton)
+var startMessage = document.createElement("h1");
+var rulesrecap = document.createElement("h5");
+var landingMessage = document.createElement("div");
+body.appendChild(landingMessage);
+landingMessage.appendChild(startMessage);
+landingMessage.appendChild(rulesrecap);
+landingMessage.setAttribute("id", "homepage")
+body.appendChild(pressButton);
+startMessage.textContent = "Click to start a short quiz on Coding";
+rulesrecap.textContent = "+1 point with every right answer, -1 point for every wrong answer. Can you get all 5 points?";
 pressButton.textContent = "Start Quiz";
 pressButton.setAttribute("id", "start")
 
@@ -26,6 +35,8 @@ function startQuiz()
 {
     var startingPoint = document.getElementById("start");
     startingPoint.hidden = true;
+    var homedisplay = document.getElementById("homepage");
+    homedisplay.hidden = true;
     setTimer();
 
 
@@ -381,7 +392,6 @@ function startQuiz()
 
                 allScores.push(playerScore);
                 localStorage.setItem("score", allScores.toString());
-                message.textContent = localStorage.getItem("player");
                 highscores();
             }
 
@@ -397,18 +407,37 @@ function startQuiz()
         var endScreen = document.getElementById("recap");
         endScreen.hidden = true;
 
-        //var player = localStorage.getItem("player");
-        //var score = localStorage.getItem("score");
+        var scoreList = document.createElement("ul");
+        scoreList.setAttribute("id", "finalscreen");
+        body.appendChild(scoreList);
 
-        //var scoreList = document.createElement("ol");
-        //var aScore = document.createElement("li");
+        var playerArray = [];
+        var playerSubmits = localStorage.getItem("player");
+        if (null != playerSubmits)
+        {
+            playerArray.push(playerSubmits.split(","));
+        }
 
-        //var playerList = [];
-        //if (player != null)
-        //{
-        //    localStorage.getItem
-        //}
-        //var scoreStorage = [];
+        var scoreArray = [];
+        var allScores = localStorage.getItem("score");
+        if (null != allScores)
+        {
+            scoreArray.push(allScores.split(","));
+        }
+
+        let i = 0;
+
+        function newScore(p, s)
+        {
+            for (let i = 0; i < playerArray.length; i++)
+            {
+                var liEl = document.createElement("li");
+                liEl.textContent = playerArray[i] + "---" + scoreArray[i]
+                scoreList.appendChild(liEl);
+            }
+        }
+
+        newScore(playerArray[i], scoreArray[i]);
 
     }
 
