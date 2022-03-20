@@ -11,6 +11,7 @@ statement.setAttribute("id", "timeKeeper");
 let timeLeft = 60;
 let playerScore = 0;
 let counter = 1;
+var timerInterval = null;
 
 var possibleQuestions = ["Commonly used Javascript datatypes do NOT include?", "Javascript can be used for?", "What is the right way to make comments in Javascript?", "What does HTML stand for?", "What does CSS stand for?"]
 
@@ -299,22 +300,29 @@ function startQuiz()
 
     function setTimer()
     {
-        var timerInterval = setInterval(function ()
+        timerInterval = setInterval(function ()
         {
             timeLeft--;
             statement.textContent = timeLeft + " seconds remaining";
 
-            if (timeLeft === 0)
+            if ((timeLeft == 0) && (timerInterval != null))
             {
                 clearInterval(timerInterval);
+                timerInterval = null;
                 quizEnd();
             }
         }, 1000);
     }
 
 
+
     function quizEnd()
     {
+        if (timerInterval != null)
+        {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
         var question5 = document.getElementById("fifthq");
         question5.hidden = true;
 
@@ -346,11 +354,11 @@ function startQuiz()
             event.preventDefault();
 
             var player = take.value;
-            var submitted = [];
+            var initials = [];
             var inStorage = localStorage.getItem("player");
             if (null != inStorage)
             {
-                submitted.push(inStorage.split(","));
+                initials.push(inStorage.split(","));
             }
 
             var allScores = [];
@@ -368,12 +376,13 @@ function startQuiz()
             else
             {
                 message.textContent = "Fantastic Job!";
-                submitted.push(player);
-                localStorage.setItem("player", player.toString());
+                initials.push(player);
+                localStorage.setItem("player", initials.toString());
 
                 allScores.push(playerScore);
-                localStorage.setItem("score", playerScore.toString());
+                localStorage.setItem("score", allScores.toString());
                 message.textContent = localStorage.getItem("player");
+                highscores();
             }
 
         })
@@ -388,15 +397,18 @@ function startQuiz()
         var endScreen = document.getElementById("recap");
         endScreen.hidden = true;
 
-        var player = localStorage.getItem("player");
-        var score = localStorage.getItem("score");
+        //var player = localStorage.getItem("player");
+        //var score = localStorage.getItem("score");
 
-        var scoreList = document.createElement("ol");
-        var aScore = document.createElement("li");
+        //var scoreList = document.createElement("ol");
+        //var aScore = document.createElement("li");
 
-        body.appendChild(scoreList);
-        scoreList.appendChild(aScore);
-        aScore.textContent = player + " --- " + score;
+        //var playerList = [];
+        //if (player != null)
+        //{
+        //    localStorage.getItem
+        //}
+        //var scoreStorage = [];
 
     }
 
