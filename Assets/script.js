@@ -1,3 +1,5 @@
+//Global variables having to do with the landing screen of the quiz
+//the starting message and quiz button
 var body = document.body;
 var pressButton = document.createElement("button");
 var startMessage = document.createElement("h1");
@@ -14,15 +16,19 @@ pressButton.textContent = "Start Quiz";
 pressButton.setAttribute("id", "start");
 pressButton.addEventListener("click", startQuiz);
 
+//this connects the button to the h1 element in the html and is what will then trigger the timer
+//the timekeeper id helps me hide the timer at later parts of the application
 var launch = document.querySelector("#start");
 var statement = document.querySelector(".time");
 statement.setAttribute("id", "timeKeeper");
 
+//this sets certain variables that then help trigger events or limit an event
 let timeLeft = 60;
 let playerScore = 0;
 let counter = 1;
 var timerInterval = null;
 
+//the next arrays are what i use as textcontent as i set up the questions
 var possibleQuestions = ["Commonly used Javascript datatypes do NOT include?", "Javascript can be used for?", "What is the right way to make comments in Javascript?", "What does HTML stand for?", "What does CSS stand for?"]
 
 var firstSetChoices = ["Objects", "Strings", "DOCTYPE", "Arrays"];
@@ -32,8 +38,10 @@ var fourthSetChoices = ["Harry Terry Merry Larry", "Hyper Text Markup Language",
 var fifthSetChoices = ["Cascading Style Sheets", "Cranky Soul Sounds", "Cascade Sold Sheets", "None of the Above"];
 
 
+//this is the quiz itself - what happens once "start quiz" is clicked
 function startQuiz()
 {
+    //this helps hide everything that came on the starting screen
     var startingPoint = document.getElementById("start");
     startingPoint.hidden = true;
     var homedisplay = document.getElementById("homepage");
@@ -41,6 +49,9 @@ function startQuiz()
     setTimer();
 
 
+    //what happens when a button linked to this function is clicked
+    //playerscore goes down if it is not zero, and also drops the timer
+    //the counter helps trigger the next question function to come up, therefore the variable that keeps the quiz going
     function wrongAnswer()
     {
         if (playerScore > 0)
@@ -85,7 +96,7 @@ function startQuiz()
         }
     }
 
-
+    //this basically does a lot of what wrong question does except no deductions
     function rightAnswer()
     {
         playerScore++;
@@ -118,6 +129,8 @@ function startQuiz()
         }
     }
 
+    //this is a function that i repeat the structure for each individual question
+    //the following questions hide the previous function so that only one question is on the screen
     function firstQuestion()
     {
         var listEl = document.createElement("ul");
@@ -309,6 +322,7 @@ function startQuiz()
     }
 
 
+    //this is the timer function, the null reference makes sure that the timer doesn't launch the quizEnd function a second time in case the player finishes the quiz quickly
     function setTimer()
     {
         timerInterval = setInterval(function ()
@@ -327,6 +341,8 @@ function startQuiz()
 
 
 
+    //clears the function and last question, and then displays the player's score
+    //asks for the player's initials and then adds the score and initials to the localstorage
     function quizEnd()
     {
         if (timerInterval != null)
@@ -360,6 +376,9 @@ function startQuiz()
         var message = document.createElement("h3");
         body.appendChild(message);
 
+        //the split parses out the array that was last in storage and then pushes it to the array above it
+        //however push makes the split array into one item once again - it works for now so i'm not touching it
+        //but it would be better to set the empty array to the localstorage split array, as i do in the highscores function
         action.addEventListener("click", function (event)
         {
             event.preventDefault();
@@ -402,6 +421,7 @@ function startQuiz()
 
 
 
+    //clears the endscreen stuff and creates the ul that will append the list scores
     function highscores()
     {
         var endScreen = document.getElementById("recap");
@@ -412,6 +432,9 @@ function startQuiz()
         body.appendChild(scoreList);
 
 
+        //this was what i talked about above the endQuiz function
+        //by setting the empty array equal to the local storage array, the length of the array doesnt change to 1
+        //as it would if i used push
         var playerArray = [];
         var playerSubmits = localStorage.getItem("player");
         if (null != playerSubmits)
@@ -426,6 +449,9 @@ function startQuiz()
             scoreArray = allScores.split(",");
         }
 
+        //i can use playerArray.length in the for conditions because for every score submitted there should be an initials
+        //the end text is an empty string that adds the player initials and score in the array
+        //and everytime a new list item is then made that takes in that text and appends it to the list
         function endList()
         {
 
@@ -446,6 +472,7 @@ function startQuiz()
 
     }
 
+    //calling the firstQuestion function starts the whole process
     firstQuestion();
 }
 

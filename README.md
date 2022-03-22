@@ -3,12 +3,22 @@
 GitHub Page: https://simonasnap.github.io/JavascriptCodeQuiz/ 
 
 Description:
+
 A code quiz that gives the player five questions to answer on coding.
-        At a wrong answer, time decreases by 10, score goes down by 1
-        At a right answer, score increases by 1
+- At a wrong answer, time decreases by 10, score goes down by 1
+- At a right answer, score increases by 1
 The player is then asked to input their initials to store their highscore
 
 What I learned:
+
+this quiz has a lot of functions within functions
+- therefore practice with keeping code organized
+- how to nestle functions and manage scope
+i practiced for loops 
+- how to make sure that list items keep getting added
+how to set up a timer and cancel it when certain requirements are met
+
+how to work with local storage and adding on to what is stored correctly
 
 Deployed Page Screenshot:
 ![A picture of the deployed HTML file](./Assets/Javascript-Quiz.png "Code Quiz Screenshot")
